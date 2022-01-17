@@ -9,18 +9,25 @@
           this.$store.getters.product.quantity
         }}
       </p>
-      <img src="../assets/tractor.jpeg" alt="Traktor" style="width: 100%; height: 100%"/>
+      <img
+        src="../assets/tractor.jpeg"
+        alt="Traktor"
+        style="width: 100%; height: 100%"
+      />
       <p>
         {{ this.$store.getters.product.description }}
       </p>
     </div>
   </div>
   <div class="comments">
-    <div v-for="comment in this.$store.getters.commentList"
-         v-bind:key="comment.id"
+    <div
+      v-for="comment in this.$store.getters.commentList"
+      v-bind:key="comment.id"
     >
       {{ comment }}
     </div>
+      <input type="text" v-model="newComment.text">
+      <button @click="sendComment">Send</button>
   </div>
 </template>
 
@@ -32,12 +39,26 @@ export default defineComponent({
   components: {},
   created() {
     this.$store.dispatch("getProduct");
+    this.$store.dispatch("getCommentList");
   },
   data() {
-    return {};
+    return {
+      newComment: {
+        text: "",
+      },
+    };
   },
-  methods: {},
-  computed: {}
+  methods: {
+    sendComment() {
+      if (!this.newComment.text) {
+        return;
+      }
+      this.$store.dispatch("addNewComment", this.newComment.text);
+
+          this.newComment.text = "";
+      }
+  },
+  computed: {},
 });
 </script>
 

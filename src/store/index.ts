@@ -1,7 +1,8 @@
 import { createStore } from "vuex";
 import { getProductById, getProducts, Product } from "@/api/product";
 import { AppState } from "@/store/state";
-import { getComments } from "@/api/comments";
+import {getComments, postComment} from "@/api/comments";
+import { Comment } from "@/api/comments";
 
 export default createStore<AppState>({
   state: {
@@ -20,8 +21,8 @@ export default createStore<AppState>({
     setProduct(state, payload: Product) {
       state.product = payload;
     },
-    setCommentList(state, payload: Product[]) {
-      state.traktorList = payload;
+    setCommentList(state, payload: Comment[]) {
+      state.commentList = payload;
     },
   },
   actions: {
@@ -46,6 +47,18 @@ export default createStore<AppState>({
         context.commit("setCommentList", payload);
       });
     },
+    addNewComment(context, newComment: string) {
+      if (!context.state.productId) {
+        return;
+      }
+      const comment = {
+        text: newComment,
+        productId: context.state.productId,
+      }
+      postComment(comment).then(() => {
+        context.dispatch("getCommentList");
+      });
+    }
   },
   modules: {},
   getters: {
