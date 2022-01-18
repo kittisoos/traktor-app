@@ -6,4 +6,6 @@ export interface AppState {
   productId: number | null;
   product: Product | null;
   commentList: Comment[];
+  isLoggedIn: boolean;
+  loginModalOpenState: boolean;
 }

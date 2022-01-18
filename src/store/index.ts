@@ -1,8 +1,8 @@
 import { createStore } from "vuex";
 import { getProductById, getProducts, Product } from "@/api/product";
 import { AppState } from "@/store/state";
-import {getComments, postComment} from "@/api/comments";
-import { Comment } from "@/api/comments";
+import { Comment, getComments, postComment } from "@/api/comments";
+import { User } from "@/api/user";
 
 export default createStore<AppState>({
   state: {
@@ -10,6 +10,8 @@ export default createStore<AppState>({
     productId: null,
     product: null,
     commentList: [],
+    isLoggedIn: false,
+    loginModalOpenState: false,
   },
   mutations: {
     setTraktorList(state, payload: Product[]) {
@@ -23,6 +25,12 @@ export default createStore<AppState>({
     },
     setCommentList(state, payload: Comment[]) {
       state.commentList = payload;
+    },
+    setLoggedIn(state, payload: boolean) {
+      state.isLoggedIn = payload;
+    },
+    setLoginModalOpenState(state, payload: boolean) {
+      state.loginModalOpenState = payload;
     },
   },
   actions: {
@@ -54,11 +62,17 @@ export default createStore<AppState>({
       const comment = {
         text: newComment,
         productId: context.state.productId,
-      }
+      };
       postComment(comment).then(() => {
         context.dispatch("getCommentList");
       });
-    }
+    },
+    checkLogin(context, user: User) {
+      if (user.userName == "admin" && user.password == "admin") {
+        context.commit("setLoggedIn", true);
+        context.commit("setLoginModalOpenState", false);
+      }
+    },
   },
   modules: {},
   getters: {

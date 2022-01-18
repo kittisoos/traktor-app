@@ -1,7 +1,5 @@
 <template>
   <div class="home">
-    <Dialog v-show="dialogOpen" @closeDialog="hideDialog">valami</Dialog>
-    <button @click="showDialog">dialog</button>
     <table>
       <thead>
         <tr>
@@ -16,9 +14,9 @@
           :key="product.id"
           @click="() => routeToProduct(product.id)"
         >
-          <td>{{product.name}}</td>
-          <td>{{product.price}}</td>
-          <td>{{product.quantity > 0 ? 'yes' : 'no'}}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.quantity > 0 ? "yes" : "no" }}</td>
         </tr>
       </tbody>
     </table>
@@ -27,26 +25,14 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Dialog from "@/components/Dialog.vue";
 
 export default defineComponent({
   name: "Home",
-  components: { Dialog },
+  components: {},
   created() {
     this.$store.dispatch("getTraktorList");
   },
-  data() {
-    return {
-      dialogOpen: false,
-    };
-  },
   methods: {
-    showDialog() {
-      this.dialogOpen = true;
-    },
-    hideDialog() {
-      this.dialogOpen = false;
-    },
     routeToProduct(productId: number) {
       this.$store.commit("setProductId", productId);
       this.$router.push("/product");

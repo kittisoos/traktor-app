@@ -26,8 +26,10 @@
     >
       {{ comment }}
     </div>
-      <input type="text" v-model="newComment.text">
-      <button @click="sendComment">Send</button>
+    <input type="text" v-model="newComment.text" />
+    <button @click="sendComment" :disabled="!this.$store.state.isLoggedIn">
+      Send
+    </button>
   </div>
 </template>
 
@@ -55,8 +57,8 @@ export default defineComponent({
       }
       this.$store.dispatch("addNewComment", this.newComment.text);
 
-          this.newComment.text = "";
-      }
+      this.newComment.text = "";
+    },
   },
   computed: {},
 });

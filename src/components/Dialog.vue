@@ -1,7 +1,10 @@
 <template>
   <div class="dialogWrapper">
     <div class="dialog">
-      <button @click="() => this.$emit('closeDialog')">Close</button>
+      <input v-model="userName" />
+      <input v-model="password" />
+      <button @click="login" :disabled="loginDisabled">LOGIN</button>
+      <button @click="hideDialog">CANCEL</button>
       <slot></slot>
     </div>
   </div>
@@ -13,13 +16,35 @@ import { defineComponent } from "vue";
 export default defineComponent({
   emits: ["closeDialog"],
   name: "Dialog",
-  components: {}
+  components: {},
+  data() {
+    return {
+      userName: "",
+      password: "",
+    };
+  },
+  methods: {
+    login() {
+      this.$store.dispatch("checkLogin", {
+        userName: this.userName,
+        password: this.password,
+      });
+    },
+    hideDialog() {
+      this.$store.commit("setLoginModalOpenState", false);
+    },
+  },
+  computed: {
+    loginDisabled() {
+      return this.userName == "" || this.password == "";
+    },
+  },
 });
 </script>
 
 <style scoped>
 .dialogWrapper {
-  background: #ff00007a;
+  background: rgba(0, 0, 0, 0.25);
   position: fixed;
   left: 0;
   top: 0;
