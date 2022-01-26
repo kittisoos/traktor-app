@@ -1,6 +1,9 @@
 <template>
-  <div class="product">
-    <div>
+  <div
+    class="grid-container"
+    style="display: flex; flex-direction: row; margin: auto"
+  >
+    <div class="product grid-item">
       <h3>
         {{ this.$store.getters.product.name }}
       </h3>
@@ -18,18 +21,19 @@
         {{ this.$store.getters.product.description }}
       </p>
     </div>
-  </div>
-  <div class="comments">
-    <div
-      v-for="comment in this.$store.getters.commentList"
-      v-bind:key="comment.id"
-    >
-      {{ comment }}
+    <div class="comments grid-item">
+      <div
+        v-for="comment in this.$store.getters.commentList"
+        v-bind:key="comment.id"
+        class="comment"
+      >
+        {{ comment.text }}
+      </div>
+      <input type="text" v-model="newComment.text" />
+      <button @click="sendComment" :disabled="!this.$store.state.isLoggedIn">
+        Send
+      </button>
     </div>
-    <input type="text" v-model="newComment.text" />
-    <button @click="sendComment" :disabled="!this.$store.state.isLoggedIn">
-      Send
-    </button>
   </div>
 </template>
 
@@ -65,12 +69,17 @@ export default defineComponent({
 </script>
 
 <style lang="sass" scoped>
-.product
+.product, .comments
   display: flex
   flex-direction: column
-  width: 30%
+  width: 50%
   box-shadow: 1px 1px 8px #c9c9c9
   border-radius: 10px
   text-align: left
-  padding-left: 20px
+  padding: 20px
+  margin: 20px
+.grid-container
+  display: inline-grid
+.comment
+  padding: 5px
 </style>
