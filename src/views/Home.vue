@@ -25,16 +25,18 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { Actions } from "@/store/actions.enum";
+import { Mutations } from "@/store/mutations.enum";
 
 export default defineComponent({
   name: "Home",
   components: {},
   created() {
-    this.$store.dispatch("getTraktorList");
+    this.$store.dispatch(Actions.getTraktorList);
   },
   methods: {
     routeToProduct(productId: number) {
-      this.$store.commit("setProductId", productId);
+      this.$store.commit(Mutations.setProductId, productId);
       this.$router.push("/product");
     },
   },

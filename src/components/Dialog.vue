@@ -12,6 +12,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { Actions } from "@/store/actions.enum";
+import { Mutations } from "@/store/mutations.enum";
 
 export default defineComponent({
   emits: ["closeDialog"],
@@ -25,13 +27,13 @@ export default defineComponent({
   },
   methods: {
     login() {
-      this.$store.dispatch("checkLogin", {
+      this.$store.dispatch(Actions.checkLogin, {
         userName: this.userName,
         password: this.password,
       });
     },
     hideDialog() {
-      this.$store.commit("setLoginModalOpenState", false);
+      this.$store.commit(Mutations.setLoginModalOpenState, false);
     },
   },
   computed: {

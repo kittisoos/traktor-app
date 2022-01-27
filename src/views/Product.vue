@@ -39,13 +39,14 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { Actions } from "@/store/actions.enum";
 
 export default defineComponent({
   name: "Product",
   components: {},
   created() {
-    this.$store.dispatch("getProduct");
-    this.$store.dispatch("getCommentList");
+    this.$store.dispatch(Actions.getProduct);
+    this.$store.dispatch(Actions.getCommentList);
   },
   data() {
     return {
@@ -59,7 +60,7 @@ export default defineComponent({
       if (!this.newComment.text) {
         return;
       }
-      this.$store.dispatch("addNewComment", this.newComment.text);
+      this.$store.dispatch(Actions.addNewComment, this.newComment.text);
 
       this.newComment.text = "";
     },

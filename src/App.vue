@@ -8,13 +8,14 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Dialog from "@/components/Dialog.vue";
+import { Mutations } from "@/store/mutations.enum";
 
 export default defineComponent({
   name: "App",
   components: { Dialog },
   methods: {
     loginDialog() {
-      this.$store.commit("setLoginModalOpenState", true);
+      this.$store.commit(Mutations.setLoginModalOpenState, true);
     },
   },
 });

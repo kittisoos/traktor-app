@@ -3,6 +3,8 @@ import { getProductById, getProducts, Product } from "@/api/product";
 import { AppState } from "@/store/state";
 import { Comment, getComments, postComment } from "@/api/comments";
 import { User } from "@/api/user";
+import { Actions } from "@/store/actions.enum";
+import { Mutations } from "@/store/mutations.enum";
 
 export default createStore<AppState>({
   state: {
@@ -14,48 +16,48 @@ export default createStore<AppState>({
     loginModalOpenState: false,
   },
   mutations: {
-    setTraktorList(state, payload: Product[]) {
+    [Mutations.setTraktorList](state, payload: Product[]) {
       state.traktorList = payload;
     },
-    setProductId(state, payload: number) {
+    [Mutations.setProductId](state, payload: number) {
       state.productId = payload;
     },
-    setProduct(state, payload: Product) {
+    [Mutations.setProduct](state, payload: Product) {
       state.product = payload;
     },
-    setCommentList(state, payload: Comment[]) {
+    [Mutations.setCommentList](state, payload: Comment[]) {
       state.commentList = payload;
     },
-    setLoggedIn(state, payload: boolean) {
+    [Mutations.setLoggedIn](state, payload: boolean) {
       state.isLoggedIn = payload;
     },
-    setLoginModalOpenState(state, payload: boolean) {
+    [Mutations.setLoginModalOpenState](state, payload: boolean) {
       state.loginModalOpenState = payload;
     },
   },
   actions: {
-    getTraktorList(context) {
+    [Actions.getTraktorList](context) {
       getProducts().then((payload) => {
-        context.commit("setTraktorList", payload);
+        context.commit(Mutations.setTraktorList, payload);
       });
     },
-    getProduct(context) {
+    [Actions.getProduct](context) {
       if (!context.state.productId) {
         return;
       }
       getProductById(context.state.productId).then((payload) => {
-        context.commit("setProduct", payload);
+        context.commit(Mutations.setProduct, payload);
       });
     },
-    getCommentList(context) {
+    [Actions.getCommentList](context) {
       if (!context.state.productId) {
         return;
       }
       getComments(context.state.productId).then((payload) => {
-        context.commit("setCommentList", payload);
+        context.commit(Mutations.setCommentList, payload);
       });
     },
-    addNewComment(context, newComment: string) {
+    [Actions.addNewComment](context, newComment: string) {
       if (!context.state.productId) {
         return;
       }
@@ -64,13 +66,13 @@ export default createStore<AppState>({
         productId: context.state.productId,
       };
       postComment(comment).then(() => {
-        context.dispatch("getCommentList");
+        context.dispatch(Actions.getCommentList);
       });
     },
-    checkLogin(context, user: User) {
+    [Actions.checkLogin](context, user: User) {
       if (user.userName == "admin" && user.password == "admin") {
-        context.commit("setLoggedIn", true);
-        context.commit("setLoginModalOpenState", false);
+        context.commit(Mutations.setLoggedIn, true);
+        context.commit(Mutations.setLoginModalOpenState, false);
       }
     },
   },
@@ -82,3 +84,23 @@ export default createStore<AppState>({
     commentList: (state) => state.commentList ?? [],
   },
 });
+
+// const ALMA = 12;
+//
+// function gyumik () {
+//   console.log("gyumik");
+// }
+//
+// let obj = {
+//   gyumi: ALMA,
+//   gyumikek: function () {
+//     console.log("gyumik");
+//   },
+//   gyumikek2() {
+//     console.log("gyumik");
+//   },
+//   ["gyumikek3"]: 12,
+//   ["gyumikek4"]() {
+//     console.log("gyumik");
+//   },
+// };
